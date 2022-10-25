@@ -3,19 +3,20 @@
 import Filter from './lib/filter.js'
 import QueryFieldGroup from './lib/query-field-group.js'
 import UrlBuilder from './lib/url-builder.js'
-import { OPERATORS } from './lib/operators.js'
 import { Command } from 'commander'
 import open from 'open'
 import enquirer from 'enquirer'
+import FilterSettingsCliIO from './lib/filter-settings-cli-io.js'
+import FilterSettingsFileIO from './lib/filter-settings-file-io.js'
 
-const { Form, AutoComplete, Select, Input } = enquirer
+const { Form } = enquirer
 
 main()
 
 async function main () {
   const options = getOption()
   const isConfigureMode = options.c
-  const needsSetFilterManually = options.m
+  const needsSetTemporaryFilterManually = options.m
   const notOpenUrlInBrowser = options.n
 
   if (isConfigureMode) {
@@ -23,7 +24,7 @@ async function main () {
   } else {
     const queryFields = await inputSearchQueryFields()
     let filter = new Filter({})
-    if (needsSetFilterManually) {
+    if (needsSetTemporaryFilterManually) {
       filter = await setFilter()
     } else {
       filter = await applyDefaultFilter()
@@ -45,12 +46,16 @@ function getOption () {
 }
 
 async function configureDefaultFilter () {
-  const currentFilter = await Filter.readDefaultSettings()
-  console.log('Current default filter settings:')
-  currentFilter.display()
+  const filterSettingsFileIO = new FilterSettingsFileIO()
+  const filterSettingsCliIO = new FilterSettingsCliIO()
 
-  const updatedFilter = await setFilter()
-  return await Filter.saveDefaultSettings(updatedFilter)
+  const currentFilter = await filterSettingsFileIO.load()
+  console.log('Current default filter settings:')
+  console.log(currentFilter)
+
+  console.log('Set your new filter settings:')
+  const updatedFilter = await filterSettingsCliIO.input()
+  return await filterSettingsFileIO.save(updatedFilter)
 }
 
 async function inputSearchQueryFields () {
@@ -77,70 +82,25 @@ async function inputSearchQueryFields () {
   queryFieldGroup.numbersRangingFrom = answer.numbersRangingFrom
   queryFieldGroup.numbersRangingTo = answer.numbersRangingTo
 
-  console.log('Search key words:', queryFieldGroup)
+  console.log(queryFieldGroup)
+
   return queryFieldGroup
 }
 
 async function setFilter () {
-  const filter = new Filter({})
   console.log('Then narrow your results by...')
-  filter.language = await inputAutoComplete('language', 'language')
-  filter.region = await inputAutoComplete('region', 'region')
-  filter.siteOrDomain = await input('site or domain', "'Search one site (like wikipedia.org ) or limit your results to a domain like .edu, .org or .gov'")
-  filter.lastUpdate = await selectFromList('lastUpdate', 'last update')
-  filter.termsAppearing = await selectFromList('termsAppearing', 'terms appearing')
-  filter.safeSearch = await selectFromList('safeSearch', 'safe search')
-  filter.fileType = await selectFromList('fileType', 'file type')
-  filter.usageRights = await selectFromList('usageRights', 'usage rights')
+  const filterSettingsCliIO = new FilterSettingsCliIO()
 
-  return filter
+  return await filterSettingsCliIO.input()
 }
 
 async function applyDefaultFilter () {
-  const filter = await Filter.readDefaultSettings()
+  const filterSettingsFileIO = new FilterSettingsFileIO()
+  const currentFilter = await filterSettingsFileIO.load()
   console.log('Applied filter:')
-  filter.display()
-  return filter
-}
+  console.log(currentFilter)
 
-async function inputAutoComplete (name, message) {
-  const prompt = new AutoComplete({
-    name,
-    message,
-    limit: 10,
-    initial: 0,
-    choices: Object.keys(OPERATORS[name]),
-    result (value) {
-      return OPERATORS[name][value]
-    }
-  })
-
-  const answer = await prompt.run()
-  return answer
-}
-
-async function selectFromList (name, message) {
-  const prompt = new Select({
-    name,
-    message,
-    choices: Object.keys(OPERATORS[name]),
-    result (value) {
-      return OPERATORS[name][value]
-    }
-  })
-
-  const answer = await prompt.run()
-  return answer
-}
-
-async function input (message, hint) {
-  const prompt = new Input({
-    message,
-    hint
-  })
-
-  const answer = await prompt.run()
-  return answer
+  return currentFilter
 }
 
 async function displayUrl (queryFields, filter, notOpenUrlInBrowser) {
