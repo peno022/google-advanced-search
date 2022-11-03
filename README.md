@@ -60,10 +60,11 @@ npx advsearch -n
 
 ## Quick Start 2 (to use as a library)
 
-Example (example.js)
+Example:
 
 ```javascript
-import { Filter, QueryFieldGroup, UrlBuilder } from './index.js'
+// example.js
+import { Filter, QueryFieldGroup, UrlBuilder } from 'google-advanced-search'
 
 const query = new QueryFieldGroup({ queryWords: 'what is bullet train', except: 'movie' })
 const filter = new Filter({
@@ -71,21 +72,20 @@ const filter = new Filter({
   region: 'any',
   lastUpdate: 'pastYear',
   siteOrDomain: 'wikipedia.org',
-  termsAppearing:'anywhereInThePage'
+  termsAppearing:'anywhereInThePage',
   safeSearch: 'showExplicitResults',
   fileType: 'any',
   usageRights: 'any'
 })
-
 const urlBuilder = new UrlBuilder()
 
 console.log(urlBuilder.generateGoogleSearchUrl(query, filter))
-
 ```
 
-You will got:
+You will get:
 
-```url
+```bash
+$ node example.js
 https://www.google.com/search?as_q=what+is+bullet+train&as_epq=&as_oq=&as_eq=movie&as_nlo=&as_nhi=&lr=lang_en&cr=&as_qdr=y&as_sitesearch=wikipedia.org&as_occt=any&safe=images&as_filetype=&tbs=
 ```
 
