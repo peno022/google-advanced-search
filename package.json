@@ -1,13 +1,13 @@
 {
   "name": "google-advanced-search",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A simple tool to google with easy advanced search settings.",
   "main": "index.js",
   "scripts": {
     "test": "mocha test/",
     "tidy": "npm install && npm run test && npx prettier . ./test/ ./lib/ && npx eslint ."
   },
-  "author": "",
+  "author": "mayo <hatonaku.mahiru@gmail.com> (https://github.com/mayumonj)",
   "license": "MIT",
   "bin": {
     "advsearch": "./cli.js"
@@ -28,5 +28,15 @@
     "enquirer": "^2.3.6",
     "inquirer": "^9.1.3",
     "open": "^8.4.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mayumonj/google-advanced-search.git"
+  },
+  "keywords": [
+    "google",
+    "search",
+    "advanced",
+    "cli"
+  ]
 }
