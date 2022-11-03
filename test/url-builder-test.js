@@ -89,7 +89,7 @@ describe('the URL generation function of UrlBuilder', function () {
       }
     )
     const urlBuilder = new UrlBuilder()
-    const expected = 'https://www.google.com/search?as_q=what+is+bullet+train%3F&as_epq=&as_oq=&as_eq=&as_nlo=&as_nhi=&lr=lang_en&cr=countryGB&as_qdr=y&as_sitesearch=wikipedia.org&as_occt=body&safe=active&as_filetype=pdf&tbs=sur%3Af'
+    const expected = 'https://www.google.com/search?as_q=what+is+bullet+train%3F&as_epq=&as_oq=&as_eq=movie&as_nlo=&as_nhi=&lr=lang_en&cr=countryUK&as_qdr=y&as_sitesearch=wikipedia.org&as_occt=body&safe=active&as_filetype=pdf&tbs=sur%3Af'
     const result = urlBuilder.generateGoogleSearchUrl(query, filter)
 
     assert.strictEqual(result, expected)
