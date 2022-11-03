@@ -30,7 +30,7 @@ describe('the input formatting function of UrlBuilder', function () {
 
   it('escapes characters for url', async () => {
     const result = urlBuilder.formatInputForURL('they are escaped ;,/?:@&=+$# and they are not -_.!~*\'()')
-    const expected = 'they are escaped %3B%2C%2F%3F%3A%40%26%3D%2B%24%23 and they are not -_.!~*\'()'
+    const expected = 'they+are+escaped+%3B%2C%2F%3F%3A%40%26%3D%2B%24%23+and+they+are+not+-_.!~*\'()'
     assert.strictEqual(result, expected)
   })
 
@@ -42,7 +42,7 @@ describe('the input formatting function of UrlBuilder', function () {
 
   it('trims empty spaces in the beginning or end of input, and escapes characters for url, and then replaces empty spaces in the middle of input with +', async () => {
     const result = urlBuilder.formatInputForURL('  Japanese+ food!  ')
-    const expected = 'Japanese%2B+food%21'
+    const expected = 'Japanese%2B+food!'
     assert.strictEqual(result, expected)
   })
 })
