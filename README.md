@@ -7,7 +7,7 @@ You can use this both...
 - as a CLI tool to help you to google more easily and quickly
 - as a library to generate a search URL for your projects
 
-![How to use cli](./resources/How_to_use_CLI.gif)
+![How to use cli](https://raw.githubusercontent.com/mayumonj/google-advanced-search/main/resources/How_to_use_CLI.gif)
 
 ## Installation
 
@@ -42,7 +42,7 @@ npx advsearch
 npx advsearch -c
 ```
 
-![How to configure filter](./resources/How_to_use_CLI_configure_filter.gif)
+![How to configure filter](https://raw.githubusercontent.com/mayumonj/google-advanced-search/main/resources/How_to_use_CLI_configure_filter.gif)
 
 ### Other options
 
