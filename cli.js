@@ -15,21 +15,18 @@ main()
 
 async function main () {
   const options = getOption()
-  const isConfigureMode = options.c
-  const needsSetTemporaryFilterManually = options.m
-  const notOpenUrlInBrowser = options.n
 
-  if (isConfigureMode) {
+  if (options.configure) {
     await configureDefaultFilter()
   } else {
     const queryFields = await inputSearchQueryFields()
     let filter = new Filter({})
-    if (needsSetTemporaryFilterManually) {
+    if (options.temporary) {
       filter = await setFilter()
     } else {
       filter = await applyDefaultFilter()
     }
-    displayUrl(queryFields, filter, notOpenUrlInBrowser)
+    displayUrl(queryFields, filter, options.notOpening)
   }
 }
 
@@ -37,9 +34,9 @@ function getOption () {
   const program = new Command()
 
   program
-    .option('-c', 'configure the default filter settings')
-    .option('-m', 'set filter manually (do not apply the default filter settings)')
-    .option('-n', 'do not open the result url in your browser')
+    .option('-c, --configure', 'configure the default filter settings')
+    .option('-t, --temporary', 'set temporary filter (does not apply the default filter settings)')
+    .option('-n, --not-opening', 'display results without opening the URL in a browser')
   program.parse()
 
   return program.opts()
