@@ -1,8 +1,8 @@
 # google-advanced-search
 
-A simple tool to google advanced search setting necessary parameters easily.  
-  
-You can use this both...  
+A simple tool to google advanced search setting necessary parameters easily.
+
+You can use this both...
 
 - as a CLI tool to help you to google more easily and quickly
 - as a library to generate a search URL for your projects
@@ -24,7 +24,7 @@ Usage: advsearch [options]
 Options:
   -c, --configure    configure the default filter settings
   -t, --temporary    set temporary filter (does not apply the default filter settings)
-  -n, --not-opening  display results without opening the URL in a browser
+  -n, --not-opening  display the result URL without opening your browser
   -h, --help         display help for command
 ```
 
@@ -52,7 +52,7 @@ npx advsearch -c
 npx advsearch -t
 ```
 
-#### Display results without opening the URL in a browser
+#### Display the result URL without opening it in your browser
 
 ```bash
 npx advsearch -n
@@ -91,8 +91,8 @@ https://www.google.com/search?as_q=what+is+bullet+train&as_epq=&as_oq=&as_eq=mov
 
 ## Parameters
 
-You can set these parameters below.
-When you do not specify them, the default values are set.
+You can set these parameters below as a search filter.
+If you didn't specify them, the filter is set to the default values.
 
 ### For Search Key Words
 
@@ -109,7 +109,8 @@ They are properties of QueryFieldGroup.
 
 ### For Result Filter
 
-Language codes and region codes were taken from the following site:  
+Language codes and region codes were taken from the following site:
+
 [XML API reference appendices  |  Programmable Search Engine  |  Google Developers](https://developers.google.com/custom-search/docs/xml_results_appendices)
 
 #### Language

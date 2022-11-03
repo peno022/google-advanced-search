@@ -35,8 +35,8 @@ function getOption () {
 
   program
     .option('-c, --configure', 'configure the default filter settings')
-    .option('-t, --temporary', 'set temporary filter (does not apply the default filter settings)')
-    .option('-n, --not-opening', 'display results without opening the URL in a browser')
+    .option('-t, --temporary', 'search with temporary filter (does not apply the default filter settings)')
+    .option('-n, --not-opening', 'display the result URL without opening your browser')
   program.parse()
 
   return program.opts()
@@ -44,7 +44,6 @@ function getOption () {
 
 async function configureDefaultFilter () {
   const filterSettingsFileIO = new FilterSettingsFileIO()
-  const filterSettingsCliIO = new FilterSettingsCliIO()
 
   const currentFilter = await filterSettingsFileIO.load()
   if (currentFilter instanceof Error) {
@@ -54,7 +53,7 @@ async function configureDefaultFilter () {
   console.log(currentFilter)
 
   console.log('Set your new filter settings:')
-  const updatedFilter = await filterSettingsCliIO.input()
+  const updatedFilter = await new FilterSettingsCliIO().input()
   if (await filterSettingsFileIO.save(updatedFilter) instanceof Error) {
     process.exit(1)
   }
@@ -91,9 +90,7 @@ async function inputSearchQueryFields () {
 
 async function setFilter () {
   console.log('Then narrow your results by...')
-  const filterSettingsCliIO = new FilterSettingsCliIO()
-
-  return await filterSettingsCliIO.input()
+  return await new FilterSettingsCliIO().input()
 }
 
 async function applyDefaultFilter () {
