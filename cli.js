@@ -10,6 +10,7 @@ import FilterSettingsCliIO from './lib/filter-settings-cli-io.js'
 import FilterSettingsFileIO from './lib/filter-settings-file-io.js'
 
 const { Form } = enquirer
+const DEFAULT_FILTER_PATH = '../config/default-filter.json'
 
 main()
 
@@ -43,20 +44,26 @@ function getOption () {
 }
 
 async function configureDefaultFilter () {
-  const filterSettingsFileIO = new FilterSettingsFileIO()
-
-  const currentFilter = await filterSettingsFileIO.load()
-  if (currentFilter instanceof Error) {
-    process.exit(1)
+  async function displayCurrentFilter (filterSettingsFileIO) {
+    const currentFilter = await filterSettingsFileIO.load()
+    if (currentFilter instanceof Error) {
+      process.exit(1)
+    }
+    console.log('Current default filter settings:')
+    console.log(currentFilter)
   }
-  console.log('Current default filter settings:')
-  console.log(currentFilter)
 
-  console.log('Set your new filter settings:')
-  const updatedFilter = await new FilterSettingsCliIO().input()
-  if (await filterSettingsFileIO.save(updatedFilter) instanceof Error) {
-    process.exit(1)
+  async function updateFilter (filterSettingsFileIO) {
+    console.log('Set your new filter settings:')
+    const updatedFilter = await new FilterSettingsCliIO().input()
+    if (await filterSettingsFileIO.save(updatedFilter) instanceof Error) {
+      process.exit(1)
+    }
   }
+
+  const filterSettingsFileIO = new FilterSettingsFileIO(DEFAULT_FILTER_PATH)
+  await displayCurrentFilter(filterSettingsFileIO)
+  await updateFilter(filterSettingsFileIO)
 }
 
 async function inputSearchQueryFields () {
@@ -94,7 +101,7 @@ async function setFilter () {
 }
 
 async function applyDefaultFilter () {
-  const filterSettingsFileIO = new FilterSettingsFileIO()
+  const filterSettingsFileIO = new FilterSettingsFileIO(DEFAULT_FILTER_PATH)
   const currentFilter = await filterSettingsFileIO.load()
   if (currentFilter instanceof Error) {
     process.exit(1)
