@@ -1,6 +1,6 @@
 # google-advanced-search
 
-A simple tool to google advanced search setting necessary parameters easily.
+A simple tool to google with easy advanced search settings.
 
 You can use this both...
 

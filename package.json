@@ -1,7 +1,7 @@
 {
   "name": "google-advanced-search",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.0.1",
+  "description": "A simple tool to google with easy advanced search settings.",
   "main": "index.js",
   "scripts": {
     "test": "mocha test/"
