@@ -50,12 +50,17 @@ async function configureDefaultFilter () {
   const filterSettingsCliIO = new FilterSettingsCliIO()
 
   const currentFilter = await filterSettingsFileIO.load()
+  if (currentFilter instanceof Error) {
+    process.exit(1)
+  }
   console.log('Current default filter settings:')
   console.log(currentFilter)
 
   console.log('Set your new filter settings:')
   const updatedFilter = await filterSettingsCliIO.input()
-  return await filterSettingsFileIO.save(updatedFilter)
+  if (await filterSettingsFileIO.save(updatedFilter) instanceof Error) {
+    process.exit(1)
+  }
 }
 
 async function inputSearchQueryFields () {
@@ -97,6 +102,9 @@ async function setFilter () {
 async function applyDefaultFilter () {
   const filterSettingsFileIO = new FilterSettingsFileIO()
   const currentFilter = await filterSettingsFileIO.load()
+  if (currentFilter instanceof Error) {
+    process.exit(1)
+  }
   console.log('Applied filter:')
   console.log(currentFilter)
 
